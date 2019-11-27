@@ -4,12 +4,19 @@ class StudentsController < ApplicationController
   end
 
   def create
-    @student = Student.new(student_params)
-    if @student.save
-      redirect_to @student
-    else
-      render 'new'
-    end
+    @classroom = Classroom.first
+    @student = Student.new
+    @student.classroom = params[:classroom]
+    @student.name = params[:name]
+    @student.classroom_id = @classroom.id
+    @student.save
+    redirect_to student_path(@student)
+    #@student = Student.new(student_params)
+    # if @student.save
+    #   redirect_to @student
+    # else
+    #   render 'new'
+    # end
   end
 
   def edit
@@ -18,6 +25,7 @@ class StudentsController < ApplicationController
 
   def show
     @student = Student.find(params[:id])
+    @classroom = @student.classroom
   end
 
   def index
